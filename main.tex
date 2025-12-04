@@ -31,6 +31,65 @@
 
 \begin{multicols}{2}
   \section*{IP (Internet Protocol)}
+  Best effort delivery: The protocol doesn't provide guarantees on delivery or QoS. More in detail:
+  \begin{itemize}
+    \item Unreliable: packet loss, retrasmission, packed delay, unordered arrival.
+    \item No QoS: bandwith, latency and jitter vary with network conditions. There are no
+          guarantees on their value. No priority amongst users: Everyone experiences the
+          same best effort service. No bitrate control to adapt to network conditions
+          (reduce bitrate to decrease latency)
+  \end{itemize}
+
+  Reliable delivery and QoS can be built on top of best effort delivery.
+
+  \section{TCP (Trasmission Control Protocol) and UDP (User Datagram Protocol)}
+  \textbf{TCP}
+  \begin{itemize}
+    \item Reliable (error checked (only in v4. v6 delegates the control at the frame
+          level))
+    \item Connection oriented (three way handshake SYN(x) SYN-ACK(x+1, y) ACK(y+1))
+    \item Network congestion avoidance
+  \end{itemize}
+  In case of failure in the communication the source is notified. The protocol is
+  implemented with positive ack + retrasmission, so sent packets are kept
+  by the source until an ack is received. They are retrasmitted if the ack is not received
+  after a timer. TCP provides ordering by numbering packets.\\
+
+  \textbf{UPD}
+  \begin{itemize}
+    \item Error checking
+    \item Connectionless (packets are not stored for retrasmission. If transmission fails
+          they are lost)
+    \item no guarantee of delivery, ordering, or duplicate protection
+    \item Sequence number and timestamp
+    \item buffer client side (to compensate jitter and to reorder)
+    \item configurable loss policy
+  \end{itemize}
+
+  \section{Example: Video streaming protocol on top of IP}
+  What we need:
+  \begin{itemize}
+    \item Smooth video reproduction with constant play time, no pauses, best resolution
+          possible, audio and video in synch.
+    \item Minimize the bandwith used on the backbone of the internet.
+  \end{itemize}
+  How to solve:
+  \begin{itemize}
+    \item UDP at transport layer: implements a queue at receiver to handle packet
+          reordering (datagrams are numbered for reordering at receival), delay (the
+          receiver can tolerate delay until the queue has datagrams to play) and to
+          absorb the jitter.
+    \item We tolerate some lost packets. If the ratio of lost packets exceedes a constant
+          we decrease quality (we download from the server a lower quality video and
+          audio to decrease bitrate). If this is not enough we can resize the queue to
+          tolerate higher delays.
+    \item To synchronize audio and video even if we send them separately we append to
+          each datagram the presentation timestamp, so the receiver can maintain one
+          playout clock and schedule video and audio together.
+    \item To avoid traffic on the backbone (and thus risking high latency and higher
+          network costs) we can divide the content in cacheable segments and store them
+          in proxies close to the clients.
+  \end{itemize}
 
   \section*{Software Architecture}
 
