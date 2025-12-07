@@ -21,18 +21,19 @@
 
 % Custom styles
 \titleformat{\section}{\fontsize{13}{12}\bfseries}{}{0pt}{}
-\titlespacing*{\section}{0pt}{6pt}{2pt}
+\titlespacing{\section}{0pt}{6pt}{2pt}
 
 \titleformat{\subsection}{\fontsize{12}{11}\bfseries\itshape}{}{0pt}{}
-\titlespacing*{\subsection}{0pt}{4pt}{1pt}
+\titlespacing{\subsection}{0pt}{4pt}{1pt}
 
 
 \begin{document}
 
 \begin{multicols}{2}
   \chapter{Intro}
-  \section*{IP (Internet Protocol)}
-  Best effort delivery: The protocol doesn't provide guarantees on delivery or QoS. More in detail:
+  \section{IP (Internet Protocol)}
+  Best effort delivery: The protocol doesn't provide guarantees on delivery or
+  QoS. More in detail:
   \begin{itemize}
     \item Unreliable: packet loss, retrasmission, packed delay, unordered arrival.
     \item No QoS: bandwith, latency and jitter vary with network conditions. There are no
@@ -103,16 +104,19 @@
           (server might be up but we are partitioned or messages are still arriving), we use suspect of crash.
           Replication mitigates this problems, but is difficult to ensure.
     \item \textbf{Transparency:} Mask network to ease development
+    \item \textbf{Timing and event ordering:} There is no global clock or shared memory, so we need to use
+          protocols to communicate betweeen nodes and synchronize
+    \item \textbf{Partial failures:} Is impossible to find with ceirtainty failures. We can only make hypothesis based on missing responses.
   \end{itemize}
 
-  \chapter*{Software Architecture}
+  \chapter{Software Architecture}
   Where do we handle the distributed part? Application vs Middleware
 
-  \section*{Network OS Based Systems}
+  \section{Network OS Based Systems}
   Application uses communication services provided at OS level. Platform
   differences are handled by the application.
 
-  \section*{Middleware-Based Systems}
+  \section{Middleware-Based Systems}
   Application relies on middleware for communication. Services commonly provided
   by the middleware are:
   \begin{itemize}
@@ -122,9 +126,9 @@
     \item Management services: naming, security, failure handling.
   \end{itemize}
 
-  \chapter*{Run-Time Architecture}
+  \chapter{Run-Time Architecture}
   What are the components and how is data exchanged at runtime?
-  \section*{Architectural Styles}
+  \section{Architectural Styles}
   \begin{itemize}
     \item \textbf{Client-server}: Clients query the API of the server with messages or RPC. Clients start the
           communication. Architecture is divided in tiers, each tier
@@ -206,26 +210,26 @@
           Code on Demand makes it easy to ship patches and new features to clients without the need of requesting updates.
   \end{itemize}
 
-  \subsection*{Peer-to-Peer (P2P)}
+  \subsection{Peer-to-Peer (P2P)}
   \begin{itemize}
     \item No distinction between client/server.
     \item Resource sharing at the network edge.
   \end{itemize}
 
-  \subsection*{Object-Oriented Model}
+  \subsection{Object-Oriented Model}
   \begin{itemize}
     \item Components encapsulate data + API.
     \item Interaction via RPC.
     \item Pros: information hiding, reusability, load distribution.
   \end{itemize}
 
-  \subsection*{Data-Centered Model}
+  \subsection{Data-Centered Model}
   \begin{itemize}
     \item Shared passive repository.
     \item Access via RPC, synchronized.
   \end{itemize}
 
-  \subsection*{Linda Tuple Spaces}
+  \subsection{Linda Tuple Spaces}
   \begin{itemize}
     \item \textbf{out(t)}: Write tuple.
     \item \textbf{rd(p)}: Read matching tuple (blocking).
@@ -233,28 +237,28 @@
     \item High decoupling, but scaling and reactivity are challenging.
   \end{itemize}
 
-  \chapter*{Interaction Model}
+  \chapter{Interaction Model}
 
-  \subsection*{Synchronous Systems}
+  \subsection{Synchronous Systems}
   \begin{itemize}
     \item Known bounds on process steps, message delays, and clock drift.
   \end{itemize}
 
-  \subsection*{Asynchronous Systems}
+  \subsection{Asynchronous Systems}
   \begin{itemize}
     \item No bounds on timing.
   \end{itemize}
 
-  \subsection*{Pepperland Example}
+  \subsection{Pepperland Example}
   \begin{itemize}
     \item \textbf{Leader election:} possible in async.
     \item \textbf{Simultaneous charge:} impossible in async.
     \item In sync systems: difference bounded by (max-min) delay.
   \end{itemize}
 
-  \section*{Failure Model}
+  \section{Failure Model}
 
-  \subsection*{Failures Types}
+  \subsection{Failures Types}
   \begin{itemize}
     \item \textbf{Omission:}
           \begin{itemize}
@@ -271,62 +275,62 @@
           \end{itemize}
   \end{itemize}
 
-  \subsection*{Failure Detection}
+  \subsection{Failure Detection}
   \begin{itemize}
     \item In sync systems: use timeouts.
     \item In async systems: can't distinguish failure from delay.
   \end{itemize}
 
-  \section*{Consensus in Failing Systems}
+  \section{Consensus in Failing Systems}
 
-  \subsection*{Two Generals Problem}
+  \subsection{Two Generals Problem}
   \begin{itemize}
     \item Agreement requires at least one message.
     \item Last message uncertainty makes it unsolvable in async systems.
   \end{itemize}
 
-  \subsection*{FLP Theorem (Fischer, Lynch, Patterson 1985)}
+  \subsection{FLP Theorem (Fischer, Lynch, Patterson 1985)}
   \begin{itemize}
     \item Consensus is impossible in async systems with even one failure.
   \end{itemize}
 
-  \subsection*{Real-Life Impact}
+  \subsection{Real-Life Impact}
   \begin{itemize}
     \item Transactions (commit/abort).
     \item Sensor agreement.
     \item Fault detection.
   \end{itemize}
 
-  \subsection*{Solutions}
+  \subsection{Solutions}
   \begin{itemize}
     \item Change assumptions (reliable links).
     \item Use probabilistic guarantees.
   \end{itemize}
 
-  \chapter*{Communication Fundamentals}
+  \chapter{Communication Fundamentals}
 
-  \subsection*{OSI Model (Recap)}
+  \subsection{OSI Model (Recap)}
   \begin{itemize}
     \item \textbf{Physical, Data Link, Network:} low-level (bits, frames, routing).
     \item \textbf{Transport:} end-to-end (TCP, UDP).
     \item \textbf{Application layers:} merged in practice.
   \end{itemize}
 
-  \subsection*{Middleware}
+  \subsection{Middleware}
   \begin{itemize}
     \item Provides common services: (un)marshaling, naming, security.
     \item Supports transient/persistent and synchronous/asynchronous communication.
   \end{itemize}
 
-  \section*{Remote Procedure Call (RPC)}
+  \section{Remote Procedure Call (RPC)}
 
-  \subsection*{RPC Basics}
+  \subsection{RPC Basics}
   \begin{itemize}
     \item Hides remote comms behind procedure call abstraction.
     \item Uses \textbf{stubs} to package calls into network messages.
   \end{itemize}
 
-  \subsection*{Parameter Passing}
+  \subsection{Parameter Passing}
   \begin{itemize}
     \item \textbf{By value:} send data copy.
     \item \textbf{By reference:} problematic; often unsupported.
@@ -334,13 +338,13 @@
           Simulates the passing by reference because all the changes will be reflected into the original object.
   \end{itemize}
 
-  \subsection*{Marshalling \& IDL}
+  \subsection{Marshalling \& IDL}
   \begin{itemize}
     \item \textbf{Marshalling:} flatten data into byte streams.
     \item \textbf{IDL:} defines service interface independent of language.
   \end{itemize}
 
-  \subsection*{RPC Implementations}
+  \subsection{RPC Implementations}
   \textbf{Sun RPC}
   \begin{itemize}
     \item Uses XDR, supports TCP/UDP.
@@ -353,15 +357,15 @@
     \item Adds directory service and security (Kerberos).
   \end{itemize}
 
-  \subsection*{Binding}
+  \subsection{Binding}
   \begin{itemize}
     \item Find out where the server process is
     \item Find out how to establish communication with it
   \end{itemize}
 
-  \section*{Sun's Solution (Portmap)}
+  \section{Sun's Solution (Portmap)}
 
-  \subsection*{How it Works}
+  \subsection{How it Works}
 
   \begin{itemize}
     \item Each server picks an available port and registers it with the local
@@ -370,7 +374,7 @@
     \item A client contacts \texttt{portmap} to retrieve the server's port number.
   \end{itemize}
 
-  \subsection*{Limitations}
+  \subsection{Limitations}
 
   \begin{itemize}
     \item \texttt{portmap} only solves the \textbf{second problem}: how to communicate.
@@ -378,7 +382,7 @@
     \item No location transparency.
   \end{itemize}
 
-  \subsection*{Workarounds}
+  \subsection{Workarounds}
 
   \begin{itemize}
     \item The client can \textbf{multicast} queries to multiple \texttt{portmap} daemons.
@@ -386,9 +390,9 @@
     \item More complex solutions require external \textbf{directory services}.
   \end{itemize}
 
-  \section*{DCE's Solution (Directory Service)}
+  \section{DCE's Solution (Directory Service)}
 
-  \subsection*{Main Idea}
+  \subsection{Main Idea}
 
   \begin{itemize}
     \item The \textbf{DCE daemon} works like \texttt{portmap}, but is coupled with a
@@ -396,7 +400,7 @@
     \item The directory server (binder daemon) provides \textbf{location transparency}.
   \end{itemize}
 
-  \subsection*{Workflow}
+  \subsection{Workflow}
 
   \begin{enumerate}
     \item The server picks a port and registers it with the local DCE daemon.
@@ -408,7 +412,7 @@
     \item The client performs the RPC call.
   \end{enumerate}
 
-  \subsection*{Advantages}
+  \subsection{Advantages}
 
   \begin{itemize}
     \item The client only needs to know the directory service location, not the service
@@ -418,7 +422,7 @@
     \item Step 3 (lookup) is needed only once per session.
   \end{itemize}
 
-  \section*{Comparison}
+  \section{Comparison}
 
   \begin{itemize}
     \item \textbf{Sun RPC (portmap):}
@@ -433,44 +437,45 @@
           \end{itemize}
   \end{itemize}
 
-  \subsection*{Dynamic Activation}
+  \subsection{Dynamic Activation}
   \begin{itemize}
     \item Use \texttt{inetd} to start servers on demand.
   \end{itemize}
 
-  \subsection*{Lightweight RPC}
+  \subsection{Lightweight RPC}
   \begin{itemize}
     \item For local calls: shared memory + context switch.
     \item Used in DCOM, .NET.
   \end{itemize}
 
-  \subsection*{Asynchronous RPC}
+  \subsection{Asynchronous RPC}
   To avoid wasting client resources.
 
-  \subsection*{Batched vs Queued RPC}
+  \subsection{Batched vs Queued RPC}
   \begin{itemize}
     \item Batch calls to reduce overhead.
     \item Queue calls in case of connection problems
   \end{itemize}
 
-  \section*{Remote Method Invocation (RMI)}
-  Can pass remote references with copy restore. Need of passing the code of objects.
+  \section{Remote Method Invocation (RMI)}
+  Can pass remote references with copy restore. Need of passing the code of
+  objects.
 
-  \section*{Message Oriented Communication}
+  \section{Message Oriented Communication}
 
-  \subsection*{Motivation}
+  \subsection{Motivation}
   \begin{itemize}
     \item RPC = point-to-point, synchronous.
     \item Message passing = decoupled, asynchronous, multi-point.
   \end{itemize}
 
-  \subsection*{Communication Types}
+  \subsection{Communication Types}
   \begin{enumerate}
     \item Transiend and persistent.
     \item Synch and asynch.
   \end{enumerate}
 
-  \section*{MPI (Message Passing Interface)}
+  \section{MPI (Message Passing Interface)}
 
   \begin{itemize}
     \item High-level message passing for HPC.
@@ -478,22 +483,22 @@
     \item No fault tolerance.
   \end{itemize}
 
-  \section*{Message Queuing (MOM)}
+  \section{Message Queuing (MOM)}
   Like an email system for programs
 
-  \subsection*{Point-to-Point Queues}
+  \subsection{Point-to-Point Queues}
   \begin{itemize}
     \item Asynchronous, persistent communication.
     \item Components have input/output queues.
   \end{itemize}
 
-  \subsection*{Architecture}
+  \subsection{Architecture}
   Peer to peer communication but brokers can be used to discover services.
   \begin{itemize}
     \item Overlay network to route packages.
   \end{itemize}
 
-  \section*{Publish/Subscribe}
+  \section{Publish/Subscribe}
 
   Message based communication model where each client can publish and subscribe
   to events. Events are notified to the subscribers by a dispatcher that can be
@@ -544,7 +549,7 @@
           sinks, viceversa for PRF.
   \end{itemize}
 
-  \subsection*{Path Construction Strategies}
+  \subsection{Path Construction Strategies}
 
   \textbf{Distance Vector (DV)}
 
@@ -584,9 +589,9 @@
           and periodic refreshes).
   \end{itemize}
 
-  \section*{Stream-oriented Communication}
+  \section{Stream-oriented Communication}
 
-  \subsection*{Types of Streams}
+  \subsection{Types of Streams}
   \begin{itemize}
     \item \textbf{Asynchronous:}  The data items in a stream are transmitted one after the
           other without any further timing constraints (apart ordering)
@@ -596,18 +601,18 @@
     \item \textbf{Isochronous:} – Isochronous: There is max and a min end-to-end delay (bounded jitter)
   \end{itemize}
 
-  \subsection*{QoS Parameters}
+  \subsection{QoS Parameters}
   \begin{itemize}
     \item Bitrate, delay, jitter, setup time.
   \end{itemize}
 
-  \subsection*{DiffServ (Internet QoS)}
+  \subsection{DiffServ (Internet QoS)}
   \begin{itemize}
     \item Differentiated Services field in IP header.
     \item DSCP (6 bits), ECN (2 bits).
   \end{itemize}
 
-  \subsection*{Application-layer QoS}
+  \subsection{Application-layer QoS}
   \begin{itemize}
     \item Buffering to control jitter.Control max jitter by sacrificing session setup
           time
@@ -615,105 +620,95 @@
     \item Interleaving data to mitigate loss.
   \end{itemize}
 
-  \section*{Naming Concepts}
+  \chapter{Naming}
 
-  \subsection*{Entities and Access Points}
+  \textbf{Entities and Access Points}
   \begin{itemize}
     \item Names identify entities (hosts, users, files, etc.).
     \item Entities are accessed through addresses (access points).
     \item Use \textbf{location-independent names} to avoid issues with mobility.
   \end{itemize}
 
-  \subsection*{Identifiers}
+  \textbf{Identifiers}
   \begin{itemize}
     \item Never change during entity’s lifetime.
     \item One-to-one mapping with entities.
   \end{itemize}
 
-  \subsection*{Name Resolution}
+  \textbf{Name Resolution}
   \begin{itemize}
     \item Map name $\rightarrow$ address (access point).
     \item Examples: DNS, LDAP, RMI registry, UDDI.
   \end{itemize}
 
-  \section*{Flat Naming}
+  \section{Flat Naming}
 
-  \subsection*{Simple Solutions}
+  \subsection{Simple Solutions}
   \begin{itemize}
     \item \textbf{Broadcast}: like ARP; not scalable.
     \item \textbf{Multicast}: reduce traffic vs broadcast.
     \item \textbf{Forwarding Pointers}: leave reference at old location.
   \end{itemize}
 
-  \subsection*{Forwarding Pointers}
+  \subsection{Forwarding Pointers}
   \begin{itemize}
     \item Proxies forward requests.
     \item Chains may become long; chain reduction needed.
   \end{itemize}
 
-  \subsection*{Home-based Approaches}
+  \subsection{Home-based Approaches}
   \begin{itemize}
     \item One home node maintains location.
     \item Used in Mobile IP and cellphone networks.
     \item Issues: latency, scalability, permanent home dependency.
   \end{itemize}
 
-  \subsection*{Distributed Hash Tables (DHT)}
-  \begin{itemize}
-    \item Abstraction: \texttt{put(id,item)}; \texttt{get(id)}.
-    \item Implemented via structured overlays: Ring, Tree, Hypercube.
-  \end{itemize}
+  \subsection{DHT}
+  Flat naming can be implemented with a DHT where the name is the key and the
+  address is the value.
 
-  \subsection*{Chord Example}
-  \begin{itemize}
-    \item Ring of nodes with $m$-bit IDs (hash of IP).
-    \item Key $k$ stored at first node with ID $\geq k$.
-    \item Finger table: $O(\log N)$ routing.
-    \item Each hop halves the distance to target.
-  \end{itemize}
+  \section{Hierarchical Approaches}
 
-  \section*{Hierarchical Approaches}
-
-  \subsection*{Hierarchical Lookup}
+  \textbf{Hierarchical Lookup}
   \begin{itemize}
     \item Root has entries for all entities.
     \item Look local $\rightarrow$ parent $\rightarrow$ child.
   \end{itemize}
 
-  \subsection*{Updates}
+  \textbf{Updates}
   \begin{itemize}
     \item Insert bottom-up or top-down.
     \item Deletion stops when multiple child paths exist.
   \end{itemize}
 
-  \subsection*{Issues}
+  \textbf{Issues}
   \begin{itemize}
     \item Caching useful for mobility patterns.
     \item Scalability: root becomes bottleneck.
   \end{itemize}
 
-  \section*{Structured Naming}
+  \section{Structured Naming}
 
-  \subsection*{Name Spaces}
+  \textbf{Name Spaces}
   \begin{itemize}
     \item Labeled graph with directories and leaves.
     \item Pathnames: e.g., \texttt{/alpha/beta/gamma}.
     \item Hard links and symbolic links possible.
   \end{itemize}
 
-  \subsection*{Name Resolution Modes}
+  \subsection{Name Resolution Modes}
   \begin{itemize}
     \item \textbf{Iterative}: client controls steps.
     \item \textbf{Recursive}: server resolves entire path.
   \end{itemize}
 
-  \subsection*{Caching \& Replication}
+  \textbf{Caching \& Replication}
   \begin{itemize}
     \item TTL for cache validity.
     \item Root servers replicated.
   \end{itemize}
 
-  \section*{DNS and Mobility}
+  \subsection{DNS and Mobility}
 
   \begin{itemize}
     \item If entity moves within domain: update local DNS.
@@ -721,15 +716,15 @@
     \item Increases lookup time; further updates not localized.
   \end{itemize}
 
-  \section*{Attribute-based Naming}
+  \section{Attribute-based Naming}
 
-  \subsection*{Directory Services}
+  \subsection{Directory Services}
   \begin{itemize}
     \item Query by attribute, not by name.
     \item Multiple entities may match query.
   \end{itemize}
 
-  \subsection*{LDAP}
+  \subsection{LDAP}
   \begin{itemize}
     \item Hierarchical + attribute-based.
     \item Records are \texttt{<attribute, value>} pairs.
@@ -738,27 +733,27 @@
           (DIT).
   \end{itemize}
 
-  \subsection*{Large-Scale LDAP}
+  \subsection{Large-Scale LDAP}
   \begin{itemize}
     \item DIT partitions DIB.
     \item Directory Service Agents (DSA) manage parts of tree.
     \item Active Directory is LDAP-based.
   \end{itemize}
 
-  \subsection*{UDDI}
+  \subsection{UDDI}
   \begin{itemize}
     \item Used for Web services discovery (similar to LDAP).
   \end{itemize}
 
-  \section*{Removing Unreferenced Entities}
+  \section{Removing Unreferenced Entities}
 
-  \subsection*{Why?}
+  \textbf{Why?}
   \begin{itemize}
     \item Prevent stale references.
     \item Needed in distributed object platforms (e.g., RMI).
   \end{itemize}
 
-  \subsection*{Reference Counting}
+  \subsection{Reference Counting}
   \begin{itemize}
     \item Object tracks number of references.
     \item If we are passing a reference and than deleting our reference, we need to first
@@ -766,14 +761,14 @@
           will be deleted before the other one receives the new reference).
   \end{itemize}
 
-  \subsection*{Weighted Reference Counting}
+  \subsection{Weighted Reference Counting}
   \begin{itemize}
     \item Counters per proxy.
     \item Only decrements sent.
     \item Limits total number of references.
   \end{itemize}
 
-  \subsection*{Reference Listing}
+  \subsection{Reference Listing}
   \begin{itemize}
     \item Keep list of proxy identities.
     \item Idempotent insert/delete.
@@ -781,13 +776,13 @@
     \item Used in Java RMI (with leases and UDP).
   \end{itemize}
 
-  \subsection*{Mark and Sweep}
+  \subsection{Mark and Sweep}
   \begin{itemize}
     \item Mark reachable entities; sweep the rest.
     \item Works poorly at scale due to global knowledge needed.
   \end{itemize}
 
-  \subsection*{Distributed Mark and Sweep (Emerald)}
+  \subsection{Distributed Mark and Sweep (Emerald)}
   \begin{itemize}
     \item Proxies, skeletons, and objects initially white.
     \item Mark from roots and propagate via proxies.
@@ -796,27 +791,20 @@
 
   \chapter{Synchronization}
 
-  \subsection*{Challenges in Distributed Systems}
+  phisical clocks drift from accurate time.
   \begin{itemize}
-    \item No shared memory, no global clock.
-    \item Partial failures possible.
+    \item \textbf{Drift Rate:} $\rho$
+    \item \textbf{Max Drift Allowed:} $\delta$
+    \item \textbf{Resync Period:} $T = \frac{\delta}{2\rho}$
   \end{itemize}
 
-  \subsection*{Synchronizing Physical Clocks}
-
-  \textbf{Drift Rate:} $\rho$
-
-  \textbf{Max Drift Allowed:} $\delta$
-
-  \textbf{Resync Period:} $T = \frac{\delta}{2\rho}$
-
-  \subsection*{Methods}
+  so every resynch period they need to adjust either:
   \begin{itemize}
     \item Against external clock (GPS, NTP).
-    \item Amongst clocks (Berkeley’s algorithm).
+    \item Amongst clocks (Berkeley's algorithm).
   \end{itemize}
 
-  \subsection*{GPS Synchronization}
+  \textbf{GPS Synchronization}
 
   \begin{itemize}
     \item Use atomic clocks on satellites.
@@ -824,46 +812,48 @@
     \item Needs signals from 4 satellites.
   \end{itemize}
 
-  \subsection*{Christian’s Algorithm}
+  \textbf{Christian's Algorithm}
 
   \begin{itemize}
     \item Client asks time server.
     \item Adjusts time by adding half of round trip time.
+    \item RTT is supposed to be small wrt the required accuracy.
+    \item To avoid the clock to run backward the time change might be introduced
+          gradually by shortening the duration of each second until convergence.
   \end{itemize}
 
-  \subsection*{Berkeley’s Algorithm}
+  \textbf{Berkeley's Algorithm}
 
   \begin{itemize}
     \item Time server collects all clocks.
     \item Computes average and broadcasts it.
   \end{itemize}
 
-  \subsection*{NTP (Network Time Protocol)}
+  \textbf{NTP (Network Time Protocol)}
+
+  Is a protocol used to share time over the internet. Time servers are organized
+  in strata based on their vicinity to a precise time source: strata 1 servers
+  contain a precise time source (GPS) and send data to lower strata over the
+  internet. The lower the strata the higher the precision (1ms if in LAN there is
+  a strata 1) (10-50ms over WAN). To synchronize we use:
 
   \begin{itemize}
-    \item Hierarchical structure.
-    \item Accuracy: 1ms LAN, 10ms Internet.
-    \item Modes: Multicast, RPC (like Christian), Symmetric.
+    \item \textbf{Periodic multicast}: from NTP server to clients in LAN.
+    \item \textbf{RPC} (like Christian)
+    \item \textbf{Symmetric} for greater precision at the cost of double the messages.
   \end{itemize}
+  % TODO Learn Symmetric
 
-  \subsection*{Symmetric Mode}
+  \section{Simulating time using logical clocks and preserving event ordering}
 
-  \begin{itemize}
-    \item Use 4 timestamps: $T_1$, $T_2$, $T_3$, $T_4$.
-    \item Offset $o = \frac{(T_2 - T_1) + (T_3 - T_4)}{2}$
-    \item Assumes symmetric channel.
-  \end{itemize}
-
-  \section*{Logical Time}
-
-  \subsection*{Happens Before Relation}
+  \subsection{Happens Before Relation}
 
   \begin{itemize}
     \item $e \rightarrow e'$ if same process and $e$ before $e'$.
     \item Or $e$ sends message, $e'$ receives it.
   \end{itemize}
 
-  \subsection*{Lamport Scalar Clocks}
+  \subsection{Lamport Scalar Clocks}
 
   \begin{itemize}
     \item Each process has a counter.
@@ -871,7 +861,7 @@
     \item On receive: counter = $\max(local, received) + 1$
   \end{itemize}
 
-  \subsection*{Totally Ordered Multicast}
+  \subsection{Totally Ordered Multicast}
 
   \begin{itemize}
     \item Messages stored in Lamport-ordered queues.
@@ -879,7 +869,7 @@
     \item Deliver message only if at top and acked by all.
   \end{itemize}
 
-  \subsection*{Vector Clocks}
+  \subsection{Vector Clocks}
 
   \begin{itemize}
     \item Each node has a vector of size $N$.
@@ -888,23 +878,23 @@
     \item Defines partial order (concurrent if not comparable).
   \end{itemize}
 
-  \subsection*{Group Chat Example}
+  \subsection{Group Chat Example}
 
   \begin{itemize}
     \item Order messages that are causally related.
     \item Concurrent messages can arrive in any order.
   \end{itemize}
 
-  \section*{Mutual Exclusion}
+  \section{Mutual Exclusion}
 
-  \subsection*{Centralized Coordinator}
+  \subsection{Centralized Coordinator}
 
   \begin{itemize}
     \item Ask the server for permission.
     \item Problem: Single point of failure.
   \end{itemize}
 
-  \subsection*{Mutual excl with scalar clocks}
+  \subsection{Mutual excl with scalar clocks}
 
   \begin{itemize}
     \item Each node sends request with Lamport clock.
@@ -925,7 +915,7 @@
           the request into the local queue above
   \end{itemize}
 
-  \subsection*{Token Ring}
+  \subsection{Token Ring}
 
   \begin{itemize}
     \item Only node with token can access resource.
@@ -933,16 +923,16 @@
     \item Failure detection needed for crash/token loss.
   \end{itemize}
 
-  \section*{Leader Election}
+  \section{Leader Election}
 
-  \subsection*{Hypotheses}
+  \subsection{Hypotheses}
 
   \begin{itemize}
     \item Closed system, unique IDs.
     \item Synchronous system (can detect failures).
   \end{itemize}
 
-  \subsection*{Bully Algorithm}
+  \subsection{Bully Algorithm}
 
   \begin{itemize}
     \item Node with highest ID wins.
@@ -954,7 +944,7 @@
     \item Complexity: number of messages: worst $O(n^2)$, best $O(n)$.
   \end{itemize}
 
-  \subsection*{Ring Election}
+  \subsection{Ring Election}
 
   \begin{itemize}
     \item Nodes pass IDs in a ring. Append its own id to the array passed around.
@@ -963,15 +953,15 @@
     \item Can optimize to $O(n\log n)$.
   \end{itemize}
 
-  \section*{Global State Collection}
+  \section{Global State Collection}
 
-  \subsection*{Consistent Cut}
+  \subsection{Consistent Cut}
 
   \begin{itemize}
     \item A cut contains all events that happened before included events.
   \end{itemize}
 
-  \subsection*{Distributed Snapshot (Chandy-Lamport)}
+  \subsection{Distributed Snapshot (Chandy-Lamport)}
 
   \begin{itemize}
     \item Initiator records state, sends tokens.
@@ -980,7 +970,7 @@
     \item Proof: Always produces a consistent cut.
   \end{itemize}
 
-  \subsection*{Termination Detection (Dijkstra-Scholten)}
+  \subsection{Termination Detection (Dijkstra-Scholten)}
 
   \begin{itemize}
     \item Use distributed tree of activations.
@@ -991,22 +981,22 @@
     \item Snapshot can also detect termination by checking idle + no messages.
   \end{itemize}
 
-  \section*{Distributed Transactions}
+  \section{Distributed Transactions}
 
-  \subsection*{ACID Properties}
+  \subsection{ACID Properties}
 
   \begin{itemize}
     \item Atomic, Consistent, Isolated, Durable.
   \end{itemize}
 
-  \subsection*{Single Node}
+  \subsection{Single Node}
 
   \begin{itemize}
     \item \textbf{Pessimistic:} private copy, commit updates.
     \item \textbf{Optimistic:} log changes, rollback on abort.
   \end{itemize}
 
-  \subsection*{2PL}
+  \subsection{2PL}
   Get all the locks before starting the transactions.\\
 
   three possible approaches:
@@ -1018,7 +1008,7 @@
     \item Fully distributed locks $\rightarrow$ requires consensus.
   \end{itemize}
 
-  \subsection*{Timestamp Ordering}
+  \subsection{Timestamp Ordering}
 
   \textbf{Pessimistic:}
 
@@ -1038,9 +1028,9 @@
   the transaction finishes and there are items that changed from the beginning,
   then the whole transaction will be aborted and a rollback will be performed.
 
-  \section*{Deadlock Handling}
+  \section{Distributed deadlock detection}
 
-  \subsection*{Detection}
+  \subsection{Detection}
   Centralized detection is not feasible
 
   \begin{itemize}
@@ -1053,7 +1043,7 @@
   To solve a deadlock, the process that finds out can commit suicide, or in the probe
   processes might write an id and the process with the higher id gets killed.
 
-  \subsection*{Prevention}
+  \subsection{Prevention}
   When getting a shared resource compare the timestamp with the timestamp of
   whoever is holding the resource.
   \begin{itemize}
@@ -1061,9 +1051,9 @@
     \item Preemption: older can stop younger and retry later.
   \end{itemize}
 
-  \section{Fault tolerance}
+  \chapter{Fault tolerance}
 
-  \subsection*{Why Fault Tolerance?}
+  \textbf{Why Fault Tolerance?}
   \begin{itemize}
     \item \textbf{Availability}: system ready when needed.
     \item \textbf{Reliability}: system runs for long time.
@@ -1072,20 +1062,20 @@
     \item \textbf{Availability $\neq$ Reliability}: 99.999\% uptime $\neq$ reliable.
   \end{itemize}
 
-  \subsection*{From Faults to Failures}
+  \textbf{From Faults to Failures}
   \begin{itemize}
     \item Failure ← Error ← Fault.
     \item Fault-tolerant = still works under faults.
   \end{itemize}
 
-  \subsection*{Fault Types}
+  \textbf{Fault Types}
   \begin{itemize}
     \item \textbf{Transient}: one-time.
     \item \textbf{Intermittent}: irregular.
     \item \textbf{Permanent}: continuous.
   \end{itemize}
 
-  \subsection*{Failure Models}
+  \textbf{Failure Models}
   \textbf{Omission Failures}
   \begin{itemize}
     \item Process: fail-stop, fail-silent.
@@ -1099,7 +1089,7 @@
     \item Arbitrary actions/messages.
   \end{itemize}
 
-  \subsection*{Redundancy Techniques}
+  \textbf{Redundancy Techniques}
   \begin{itemize}
     \item \textbf{Information}: Hamming codes.
     \item \textbf{Time}: retry.
@@ -1107,22 +1097,22 @@
     \item \textbf{TMR}: triple modular redundancy + voting.
   \end{itemize}
 
-  \section*{Client-Server Tolerance}
+  \section{Client-Server Tolerance}
 
-  \subsection*{RPC Failures}
+  \textbf{RPC Failures}
   \begin{itemize}
     \item Server not found, lost request/reply, crashes.
     \item Cannot distinguish lost reply from crash.
     \item Semantics: at-most once, at-least once.
   \end{itemize}
 
-  \subsection*{Print Server Example}
+  \textbf{Print Server Example}
   \begin{itemize}
     \item Client reissue strategies: always, never, only if reply, only if no reply.
     \item No strategy guarantees exactly-once semantics.
   \end{itemize}
 
-  \subsection*{Client Crashes}
+  \textbf{Client Crashes}
   \textbf{Orphan computation solutions}:
   \begin{itemize}
     \item Extermination: client logs calls and when reboot kills (problem with orphans)
@@ -1133,29 +1123,29 @@
     \item Expiration: Computation expires
   \end{itemize}
 
-  \section*{Process Resilience \& Agreement}
+  \section{Process Resilience \& Agreement}
 
-  \subsection*{Redundant Groups}
+  \textbf{Redundant Groups}
   \begin{itemize}
     \item Process groups (flat/coordinated).
     \item Fail-silent: $k+1$ for $k$-fault-tolerance.
     \item Byzantine: $2k+1$ needed.
   \end{itemize}
 
-  \subsection*{Consensus Problem}
+  \textbf{Consensus Problem}
   \begin{itemize}
     \item \textbf{Agreement}: all agree.
     \item \textbf{Validity}: if same input $v$, then output $v$.
     \item \textbf{Termination}: all decide eventually.
   \end{itemize}
 
-  \subsection*{Crash Failures (sync)}
+  \textbf{Crash Failures (sync)}
   \begin{itemize}
     \item Solvable in $f+1$ rounds for $f$ faults.
     \item FloodSet algorithm.
   \end{itemize}
 
-  \subsection{FloodSet algorithm}
+  \textbf{FloodSet algorithm}
   \begin{itemize}
     \item Each process chooses v0 and puts it in W
     \item f+1 rounds of broadcast messages with content of W
@@ -1164,52 +1154,52 @@
     \item Decide with same deterministic function the value in W
   \end{itemize}
 
-  \subsection*{Byzantine Failures (sync)}
+  \textbf{Byzantine Failures (sync)}
   \begin{itemize}
     \item Lamport's Byzantine Generals Problem.
     \item Need $3f+1$ nodes to tolerate $f$ faulty.
   \end{itemize}
 
-  \subsection*{FLP Theorem (async)}
+  \textbf{FLP Theorem (async)}
   \begin{itemize}
     \item Consensus impossible with even 1 crash fault in async model.
   \end{itemize}
 
-  \section*{Reliable Group Communication}
+  \section{Reliable Group Communication}
 
-  \subsection*{Multicast Challenges}
+  \textbf{Multicast Challenges}
   \begin{itemize}
     \item Sender crash mid-send.
     \item Dynamic membership.
   \end{itemize}
 
-  \subsection{Non faulty processes}
+  \textbf{Non faulty processes}
   \begin{enumerate}
     \item Ack/Nack-based protocols (scalability issues).
     \item Suppress replicated NACKs
     \item Hierarchical control to improve scalability (needs to be maintained)
   \end{enumerate}
 
-  \subsection*{Atomic Multicast}
+  \textbf{Atomic Multicast}
   \begin{itemize}
     \item All-or-none + same order for all.
   \end{itemize}
 
-  \subsection*{Virtual Synchrony}
+  \textbf{Virtual Synchrony}
   \begin{itemize}
     \item A view contains all the active processes.
     \item The view changes (failures of join) are notified in broadcast.
     \item All messages sent in a view are received by the same view.
   \end{itemize}
 
-  \subsection*{Ordering Models}
+  \textbf{Ordering Models}
   \begin{itemize}
     \item \textbf{Unordered}, \textbf{FIFO}, \textbf{Causal}
     \item \textbf{Total}. Every member of the view receives messages in the same order.
     \item Atomic multicast = totally ordered virtual synchrony.
   \end{itemize}
 
-  \subsection*{Implementation of VS (ISIS)}
+  \textbf{Implementation of VS (ISIS)}
   Idea: messages sent to group view are delivered before the view change.
   \begin{itemize}
     \item Assumption: Reliable FIFO channels
@@ -1223,15 +1213,15 @@
 
   (this assumes no failures during the view change). To allow that there is another version.
 
-  \section*{Recovery Techniques}
+  \section{Recovery Techniques}
 
   Checkpointing and logging.
 
-  \subsection*{Recovery Line and consistent cut}
+  \textbf{Recovery Line and consistent cut}
   Find a good checkpoint that corresponds to a valid global state: No message
   sent without receive by target and no message receive without send.
 
-  \section*{Independent Checkpointing}
+  \textbf{Independent Checkpointing}
 
   \begin{itemize}
     \item Each process saves state independently.
@@ -1240,7 +1230,7 @@
 
   \includegraphics[width=\columnwidth]{Figures/dep.png}
 
-  \section*{Coordinated Checkpointing}
+  \textbf{Coordinated Checkpointing}
   Idea: block communication until everyone has the checkpoint.
   \begin{itemize}
     \item Coordinator sends \texttt{CHKP-REQ}.
@@ -1248,15 +1238,15 @@
     \item On all ACKs, coordinator sends \texttt{CHKP-DONE}.
   \end{itemize}
 
-  \section*{Logging Schemes}
+  \textbf{Logging Schemes}
 
-  \subsection*{Principle}
+  \textbf{Principle}
   \begin{itemize}
     \item Replay messages from log after crash.
     \item Assumes messages cause deterministic actions on send and receive.
   \end{itemize}
 
-  \subsection*{Key Concepts}
+  \textbf{Key Concepts}
   \begin{itemize}
     \item \textbf{Stable message}: written to stable storage.
     \item \textbf{DEP(m)}: processes dependent on $m$ (also indirectly, meaning that they
@@ -1264,7 +1254,7 @@
     \item \textbf{COPY(m)}: processes holding a copy of $m$.
   \end{itemize}
 
-  \subsection*{Orphan Process}
+  \textbf{Orphan Process}
   \begin{itemize}
     \item A surviving process $Q$ is orphan if $Q \in \text{DEP}(m)$ and all of
           $\text{COPY}(m)$ crashed.
@@ -1275,48 +1265,48 @@
   message that the orphan received. Thus the orphan needs to rollback the changes
   caused by the message.
 
-  \section*{Pessimistic vs Optimistic Logging}
+  \textbf{Pessimistic vs Optimistic Logging}
 
-  \subsection*{Pessimistic Logging}
+  \textbf{Pessimistic Logging}
   \begin{itemize}
     \item Message logged before delivery.
     \item No orphans possible.
     \item Sender or receiver writes to stable storage before further communication.
   \end{itemize}
 
-  \subsection*{Optimistic Logging}
+  \textbf{Optimistic Logging}
   \begin{itemize}
     \item Message logged asynchronously.
     \item Orphans may be created, must rollback to consistent state.
     \item Similar to independent checkpoint rollback.
   \end{itemize}
 
-  \subsection*{Final Notes}
+  \textbf{Final Notes}
   \begin{itemize}
     \item Pessimistic: safer, more overhead.
     \item Optimistic: lighter, more risky.
     \item Best: combine logging + coordinated checkpointing.
   \end{itemize}
 
-  \section{Agreement in practice}
+  \chapter{Agreement in practice}
 
-  \section*{Atomic Commit Protocols}
+  \section{Atomic Commit Protocols}
 
-  \subsection*{Atomic Commit}
+  \subsection{Atomic Commit}
   \begin{itemize}
     \item Ensures \textbf{atomicity} (ACID): all or nothing.
     \item If distributed: either all nodes commit or abort.
     \item Crash in any node $\rightarrow$ global abort.
   \end{itemize}
 
-  \subsection*{Consensus vs Atomic Commit}
+  \subsection{Consensus vs Atomic Commit}
   \begin{itemize}
     \item \textbf{Consensus:} nodes propose a value, agree on one.
     \item \textbf{Atomic Commit:} all must vote commit for commit to happen.
     \item Consensus tolerates some failures; atomic commit does not.
   \end{itemize}
 
-  \section*{Two-Phase Commit (2PC)}
+  \section{Two-Phase Commit (2PC)}
 
   \textbf{Phase 1: Prepare}
   \begin{itemize}
@@ -1340,7 +1330,7 @@
   Recovery in case of failure of the Coordinator:\\ Participant Timeout
   $\rightarrow$ request decision from others.
 
-  \section*{Three-Phase Commit (3PC)}
+  \section{Three-Phase Commit (3PC)}
 
   \begin{itemize}
     \item Adds \texttt{pre-commit} phase to avoid blocking.
@@ -1379,14 +1369,14 @@
     \item More expensive than 2PC.
   \end{itemize}
 
-  \subsection*{Commit Protocol Summary}
+  \subsection{Commit Protocol Summary}
   \begin{itemize}
     \item 2PC: safe, \textbf{blocking}.
     \item 3PC: safe, \textbf{non-blocking (synchronous only)}.
     \item 3PC rarely used in practice.
   \end{itemize}
 
-  \subsection*{CAP Theorem}
+  \subsection{CAP Theorem}
   \begin{itemize}
     \item \textbf{C}onsistency: single up-to-date copy.
     \item \textbf{A}vailability: always respond to reads/writes.
@@ -1395,55 +1385,55 @@
     \item Systems balance C and A depending on needs.
   \end{itemize}
 
-  \section*{Replicated State Machines}
+  \section{Replicated State Machines}
 
-  \subsection*{Overview}
+  \subsection{Overview}
   \begin{itemize}
     \item General-purpose consensus: multiple servers act as one.
     \item Maintain identical copies of state.
     \item Survive failures, provide continuous service.
   \end{itemize}
 
-  \subsection*{State Machine Model}
+  \subsection{State Machine Model}
   \begin{itemize}
     \item Internal state updated by external requests.
     \item Example: key-value storage with \texttt{read/write}.
   \end{itemize}
 
-  \subsection*{Replicated Logs}
+  \subsection{Replicated Logs}
   \begin{itemize}
     \item Ensure all state machines execute same commands in same order.
     \item Achieved via consensus (e.g., Raft).
   \end{itemize}
 
-  \subsection*{Failure Model}
+  \subsection{Failure Model}
   \begin{itemize}
     \item Async comm: delays, loss, duplication possible.
     \item Crash-stop failures, recovery via durable log.
   \end{itemize}
 
-  \subsection*{Guarantees}
+  \subsection{Guarantees}
   \begin{itemize}
     \item \textbf{Safety}: all correct nodes have same sequence.
     \item \textbf{Liveness}: progress if majority is alive and connected.
     \item FLP theorem $\rightarrow$ no full guarantee in async model.
   \end{itemize}
 
-  \section*{Raft Protocol}
+  \section{Raft Protocol}
 
-  \subsection*{Motivation}
+  \subsection{Motivation}
   \begin{itemize}
     \item Easier to understand and implement than Paxos.
     \item Decomposed into: log replication, leader election, safety.
   \end{itemize}
 
-  \subsection*{Server States}
+  \subsection{Server States}
   \begin{itemize}
     \item \textbf{Follower} (default), \textbf{Candidate}, \textbf{Leader}.
     \item Election triggered by heartbeat timeout.
   \end{itemize}
 
-  \subsection*{Leader Election}
+  \subsection{Leader Election}
   \begin{itemize}
     \item Randomized timeouts (150-300 ms).
     \item Candidate increases term, requests votes.
@@ -1453,13 +1443,13 @@
           from a server not up to date will deny the vote.
   \end{itemize}
 
-  \subsection*{Terms}
+  \subsection{Terms}
   \begin{itemize}
     \item Logical clock: one leader per term.
     \item Used to detect stale info and ensure safety.
   \end{itemize}
 
-  \section*{Normal Operation}
+  \section{Normal Operation}
 
   \begin{itemize}
     \item Client → Leader: send command.
@@ -1469,28 +1459,28 @@
     \item Retry mechanism for lagging nodes.
   \end{itemize}
 
-  \section*{Log Management}
+  \section{Log Management}
 
-  \subsection*{Log Structure}
+  \subsection{Log Structure}
   \begin{itemize}
     \item Entries have term, index, command.
     \item Stored on disk for durability.
   \end{itemize}
 
-  \subsection*{Consistency}
+  \subsection{Consistency}
   \begin{itemize}
     \item \textbf{Log matching property}: same index + term $\rightarrow$ same history.
     \item \texttt{AppendEntries} includes $<$prevIndex, prevTerm$>$.
           In case the follower has Mismatched log cause retries with decremented index. (this way we reconcile logs).
   \end{itemize}
 
-  \subsection*{Leader Completeness}
+  \subsection{Leader Completeness}
   \begin{itemize}
     \item If entry is committed, it must exist in future leaders.
     \item Election denied if candidate's log is less up-to-date.
   \end{itemize}
 
-  \section*{Client Interaction}
+  \section{Client Interaction}
 
   \begin{itemize}
     \item Clients talk to leader.
@@ -1499,7 +1489,7 @@
     \item Servers track last client ID to discard duplicates.
   \end{itemize}
 
-  \section*{Network Partitions}
+  \section{Network Partitions}
 
   \begin{itemize}
     \item Split brain: two leaders may exist.
@@ -1507,7 +1497,7 @@
     \item Once reconnected, stale leader steps down (learns new term).
   \end{itemize}
 
-  \section*{Use in Distributed DBMS}
+  \section{Use in Distributed DBMS}
 
   \begin{itemize}
     \item Partitions are replicated state machines.
@@ -1516,21 +1506,21 @@
     \item Availability: majority of nodes in each partition must be reachable.
   \end{itemize}
 
-  \section*{Extras (not detailed)}
+  \section{Extras (not detailed)}
   \begin{itemize}
     \item Log compaction
     \item Membership changes
     \item Performance optimization
   \end{itemize}
 
-  \subsection*{Byzantine Fault Tolerance (BFT)}
+  \subsection{Byzantine Fault Tolerance (BFT)}
   \begin{itemize}
     \item Extends state machine replication to tolerate faulty/malicious nodes.
     \item Requires $3f+1$ nodes to tolerate $f$ Byzantine faults.
     \item Similar assumptions as Paxos/Raft.
   \end{itemize}
 
-  \subsection*{Blockchain as a Replicated Log}
+  \subsection{Blockchain as a Replicated Log}
   \begin{itemize}
     \item Cryptocurrency = replicated state machine.
     \item \textbf{State:} user balances.
@@ -1538,20 +1528,20 @@
     \item Byzantine users may attempt double spending.
   \end{itemize}
 
-  \subsection*{Assumptions (e.g., Bitcoin)}
+  \subsection{Assumptions (e.g., Bitcoin)}
   \begin{itemize}
     \item Very large, open set of nodes.
     \item Participants not known in advance.
     \item No entity controls majority of compute.
   \end{itemize}
 
-  \subsection*{Guarantees}
+  \subsection{Guarantees}
   \begin{itemize}
     \item No provable safety; correctness holds with high probability.
     \item Stronger guarantees require assumptions on compute majority.
   \end{itemize}
 
-  \subsection*{Blockchain Structure}
+  \subsection{Blockchain Structure}
   \begin{itemize}
     \item Public ledger of all transactions since genesis.
     \item Each block contains several transactions.
@@ -1559,7 +1549,7 @@
     \item If private key is lost, funds are unrecoverable.
   \end{itemize}
 
-  \subsection*{Proof of Work (PoW)}
+  \subsection{Proof of Work (PoW)}
   \begin{itemize}
     \item Miner solves cryptographic puzzle over previous block + new data.
     \item \textbf{Hard to compute}, \textbf{easy to verify}.
@@ -1567,7 +1557,7 @@
     \item Difficulty adapts to global compute power.
   \end{itemize}
 
-  \subsection*{Mining Process}
+  \subsection{Mining Process}
   \begin{itemize}
     \item Miners collect pending transactions, form a block, compute PoW.
     \item Incentivized: earn Bitcoin if successful.
@@ -1575,14 +1565,14 @@
     \item Agreement on block order via longest chain.
   \end{itemize}
 
-  \subsection*{Forks \& Consistency}
+  \subsection{Forks \& Consistency}
   \begin{itemize}
     \item Two miners may solve PoW concurrently → fork.
     \item Chain that grows faster is accepted.
     \item No absolute certainty on finality (a longer chain may emerge later).
   \end{itemize}
 
-  \subsection*{Double Spending Attack}
+  \subsection{Double Spending Attack}
   \begin{itemize}
     \item Malicious node with high compute can create two chains:
           \begin{itemize}
@@ -1592,16 +1582,16 @@
     \item A and B cannot both be sure theirs is the canonical chain.
   \end{itemize}
 
-  \section*{Consistency}
+  \section{Consistency}
 
-  \subsection*{Replication goals}
+  \subsection{Replication goals}
   \begin{itemize}
     \item \textbf{Fault tolerance} via redundancy.
     \item \textbf{Availability} during disconnection (mobile) or overload.
     \item \textbf{Performance} via load balancing and reduced latency.
   \end{itemize}
 
-  \section*{Replication: Challenges}
+  \section{Replication: Challenges}
   \begin{itemize}
     \item \textbf{Consistency} across replicas: updates must be coordinated.
     \item \textbf{Conflict handling} when concurrent writes occur.
@@ -1609,18 +1599,18 @@
     \item Varying consistency needs: data-centric vs client-centric.
   \end{itemize}
 
-  \section*{Consistency Models}
-  Contract between client and replicated system. Cannot be
-  Read should return the latest write because without global clock, this is ambiguous.
+  \section{Consistency Models}
+  Contract between client and replicated system. Cannot be Read should return the
+  latest write because without global clock, this is ambiguous.
 
-  \subsection*{Types of Guarantees}
+  \subsection{Types of Guarantees}
   \begin{itemize}
     \item \textbf{Content}: max version difference across replicas.
     \item \textbf{Staleness}: max propagation delay.
     \item \textbf{Order}: constraints on update sequence.
   \end{itemize}
 
-  \section*{Single Leader Protocols}
+  \section{Single Leader Protocols}
 
   \begin{itemize}
     \item One replica is leader; all writes go to it.
@@ -1628,14 +1618,14 @@
     \item Reads can go to leader or followers.
   \end{itemize}
 
-  \subsection*{Write Strategies}
+  \subsection{Write Strategies}
   \begin{itemize}
     \item \textbf{Synchronous}: wait for all followers.
     \item \textbf{Asynchronous}: commit after leader write.
     \item \textbf{Semi-synchronous}: wait for $k$ followers.
   \end{itemize}
 
-  \subsection*{Pros \& Cons}
+  \subsection{Pros \& Cons}
   \begin{itemize}
     \item Safe: avoid write-write conflicts.
     \item Failover needs consensus.
@@ -1643,29 +1633,29 @@
   \end{itemize}
   Used in Typical in single-org / data center (low latency).
 
-  \section*{Multi Leader Protocols}
+  \section{Multi Leader Protocols}
 
   \begin{itemize}
     \item Clients write to different replicas.
     \item No global order of writes $\rightarrow$ write-write conflicts possible.
   \end{itemize}
 
-  \subsection*{When used}
+  \subsection{When used}
   \begin{itemize}
     \item Geo-replication: writing to far-away leader is too costly.
     \item Single datacenter has single leader. Between datacenter multileader.
   \end{itemize}
 
-  \section*{Leaderless Protocols}
+  \section{Leaderless Protocols}
 
   \begin{itemize}
     \item Client or coordinator writes/reads to/from multiple replicas.
     \item Uses quorum protocols (majority voting).
   \end{itemize}
 
-  \section*{Data-Centric Consistency Models}
+  \section{Data-Centric Consistency Models}
 
-  \subsection*{Sequential Consistency}
+  \subsection{Sequential Consistency}
   \begin{itemize}
     \item Operations within a process may not be re-ordered (Each process sees operations
           in program order.)
@@ -1706,7 +1696,7 @@
     \item No high availability
   \end{enumerate}
 
-  \subsection*{Linearizability}
+  \subsection{Linearizability}
   \begin{itemize}
     \item Stronger than sequential.
     \item Each operation appears to occur at a unique point in wall-clock time (so
@@ -1720,7 +1710,7 @@
     \item No sticky client needed!
   \end{itemize}
 
-  \subsection*{Causal Consistency}
+  \subsection{Causal Consistency}
   \begin{itemize}
     \item Preserves causal relationships (Lamport's happens-before).
     \item All processes see causally related writes in same order.
@@ -1733,7 +1723,7 @@
   When a write is received, the process will use the vector clock to understand
   if there are some writes that have been missed.
 
-  \subsection*{FIFO Consistency (PRAM)}
+  \subsection{FIFO Consistency (PRAM)}
   \begin{itemize}
     \item Writes from a single process are seen in order (also if they happen on
           different variables).
@@ -1751,7 +1741,7 @@
   \subsection{Esercizio: capisci se è sequentially consisten con 2 variabili}
   Cerca di trovare un'esecuzione lineare
 
-  \subsection*{Eventual Consistency}
+  \subsection{Eventual Consistency}
   \begin{itemize}
     \item All replicas converge eventually.
     \item Used when updates are rare or can be easily resolved.
@@ -1759,16 +1749,16 @@
     \item Lightweight, highly available.
   \end{itemize}
 
-  \subsection*{Conflict-Free Replicated Data Types (CRDTs)}
+  \subsection{Conflict-Free Replicated Data Types (CRDTs)}
   \begin{itemize}
     \item Ensure convergence even with concurrent, unordered updates.
     \item Commutative operations (e.g., counters).
     \item Example: list with timestamped appends (last-write-wins).
   \end{itemize}
 
-  \section*{Client-Centric Consistency Models}
+  \section{Client-Centric Consistency Models}
 
-  \subsection*{Motivation}
+  \subsection{Motivation}
   \begin{itemize}
     \item Clients may access different replicas.
     \item Goal: define guarantees from the perspective of one client.
@@ -1778,7 +1768,7 @@
   to propagate changes to every replica before accepting new operations from that
   client.
 
-  \subsection*{Monotonic Reads}
+  \subsection{Monotonic Reads}
   \begin{itemize}
     \item Once a client reads a value, future reads return same or newer.
     \item Prevents reading older values on other replicas.
@@ -1786,25 +1776,25 @@
   Means that if I read that the list contains 1 and 2, a subsequent read from
   other replicas needs to contain 1 and 2, or a newer value.
 
-  \subsection*{Monotonic Writes}
+  \subsection{Monotonic Writes}
   \begin{itemize}
     \item Writes by a client are seen in issue order.
     \item Similar to FIFO, limited to same client.
   \end{itemize}
 
-  \subsection*{Read Your Writes}
+  \subsection{Read Your Writes}
   \begin{itemize}
     \item A client always sees the effect of its own writes.
     \item Ex: password change, form submission.
   \end{itemize}
 
-  \subsection*{Writes Follow Reads}
+  \subsection{Writes Follow Reads}
   \begin{itemize}
     \item Writes happen on a state at least as recent as prior reads.
     \item Ex: reply to post after reading original.
   \end{itemize}
 
-  \section*{Implementation}
+  \section{Implementation}
 
   \begin{itemize}
     \item Each operation has unique ID: replica ID + seq. number.
@@ -1815,7 +1805,7 @@
     \item Vector clocks used to track causal dependencies.
   \end{itemize}
 
-  \subsection*{Strategies}
+  \subsection{Strategies}
   \begin{itemize}
     \item \textbf{Monotonic reads}: ensure new replica has all writes in read-set.
     \item \textbf{Monotonic writes}: ensure new replica has all writes on write-set.
@@ -1823,7 +1813,7 @@
     \item \textbf{Writes follow reads}: fetch updates in read-set before write.
   \end{itemize}
 
-  \section*{Replica Placement}
+  \section{Replica Placement}
 
   \begin{itemize}
     \item \textbf{Permanent}: static, DNS, CDNs.
@@ -1831,7 +1821,7 @@
     \item \textbf{Client-initiated}: caching, shared by clients.
   \end{itemize}
 
-  \section*{What do to if a data is changed}
+  \section{What do to if a data is changed}
 
   \begin{itemize}
     \item \textbf{Notify}: send invalidation only (few reads).
@@ -1839,7 +1829,7 @@
     \item \textbf{Transfer operation}: send op to apply (active replication).
   \end{itemize}
 
-  \section*{Update propagation}
+  \section{Update propagation}
 
   \begin{itemize}
     \item \textbf{Push}: updates sent to all (low latency).
@@ -1847,22 +1837,22 @@
     \item \textbf{Lease-based}: control frequency of polling.
   \end{itemize}
 
-  \section*{Strategies}
+  \section{Strategies}
 
-  \subsection*{Leader-based}
+  \subsection{Leader-based}
   \begin{itemize}
     \item Synchronous / async / semi-sync propagation.
   \end{itemize}
 
-  \subsection*{Leaderless}
+  \subsection{Leaderless}
   \begin{itemize}
     \item \textbf{Read repair}: detect + fix during read.
     \item \textbf{Anti-entropy}: background reconciliation.
   \end{itemize}
 
-  \section*{Case Studies}
+  \section{Case Studies}
 
-  \subsection*{Spanner}
+  \subsection{Spanner}
   \begin{itemize}
     \item Paxos replication, 2PC commit, timestamp-based concurrency.
     \item TrueTime API gives precise time with bounded uncertainty $\rightarrow$
@@ -1871,7 +1861,7 @@
           locking.
   \end{itemize}
 
-  \subsection*{Calvin}
+  \subsection{Calvin}
   \begin{itemize}
     \item Paxos-based replicated log.
     \item Transactions are appended to the log.
@@ -1880,133 +1870,133 @@
           catch up by replay the log.
   \end{itemize}
 
-  \subsection*{VoltDB}
+  \subsection{VoltDB}
   \begin{itemize}
     \item Manual partitioning.
     \item Single-partition transactions executed locally without coordination.
   \end{itemize}
 
-  \section*{MapReduce}
+  \section{MapReduce}
 
-  \subsection*{What the platform does}
+  \subsection{What the platform does}
   \begin{itemize}
     \item Scheduling: assign map/reduce tasks.
     \item Data distribution: shuffle from mappers to reducers.
     \item Fault tolerance: rerun failed tasks.
   \end{itemize}
 
-  \subsection*{Architecture}
+  \subsection{Architecture}
   \begin{itemize}
     \item Master assigns tasks to workers.
     \item Map phase: split input $\to$ process $\to$ local files.
     \item Reduce phase: read intermediate data $\to$ reduce $\to$ output.
   \end{itemize}
 
-  \subsection*{Data Locality}
+  \subsection{Data Locality}
   \begin{itemize}
     \item Minimize network usage.
     \item Map tasks scheduled near data (e.g., GFS replicas).
   \end{itemize}
 
-  \subsection*{Fault Tolerance}
+  \subsection{Fault Tolerance}
   Master evaluates health of workers with heartbeat
   \begin{itemize}
     \item Worker crash: redo map/reduce tasks.
     \item Master crash: checkpoint state to recover.
   \end{itemize}
 
-  \subsection*{Stragglers}
+  \subsection{Stragglers}
   \begin{itemize}
     \item Slow tasks duplicated to reduce overall latency.
   \end{itemize}
 
-  \subsection*{Limitations}
+  \subsection{Limitations}
   \begin{itemize}
     \item High overhead, fixed Map/Reduce steps.
     \item Each step must finish before the next starts.
   \end{itemize}
 
-  \section*{Beyond MapReduce: Dataflow Systems}
+  \section{Beyond MapReduce: Dataflow Systems}
 
-  \subsection*{Motivation}
+  \subsection{Motivation}
   \begin{itemize}
     \item Move from 2-step (map/reduce) to DAG of transformations.
     \item Support for iterative and streaming computations.
   \end{itemize}
 
-  \section*{Apache Spark}
+  \section{Apache Spark}
 
-  \subsection*{Model}
+  \subsection{Model}
   \begin{itemize}
     \item Arbitrary stages instead of just map/reduce.
     \item Intermediate results can be cached in memory.
   \end{itemize}
 
-  \subsection*{Micro-batch Streaming}
+  \subsection{Micro-batch Streaming}
   \begin{itemize}
     \item Input stream split into small batches.
     \item Persistent state across batches.
   \end{itemize}
 
-  \section*{Apache Flink}
+  \section{Apache Flink}
 
-  \subsection*{Model}
+  \subsection{Model}
   \begin{itemize}
     \item All operators instantiated at job submission.
     \item Data flows continuously through TCP channels.
   \end{itemize}
 
-  \subsection*{Streaming}
+  \subsection{Streaming}
   \begin{itemize}
     \item Ideal for low latency stream processing.
     \item Same architecture used for batch (stream the batch).
   \end{itemize}
 
-  \section*{Comparison: Spark vs Flink}
+  \section{Comparison: Spark vs Flink}
 
-  \subsection*{Latency}
+  \subsection{Latency}
   \begin{itemize}
     \item \textbf{Flink}: lower latency (no batching, pipelining).
   \end{itemize}
 
-  \subsection*{Throughput}
+  \subsection{Throughput}
   \begin{itemize}
     \item \textbf{Spark}: better throughput (batching optimizations, compression).
   \end{itemize}
 
-  \subsection*{Load Balancing}
+  \subsection{Load Balancing}
   \begin{itemize}
     \item \textbf{Spark}: dynamic scheduling allows balancing at runtime.
     \item \textbf{Flink}: tasks assigned statically at deployment.
   \end{itemize}
 
-  \subsection*{Elasticity}
+  \subsection{Elasticity}
   \begin{itemize}
     \item \textbf{Spark}: dynamically add/remove resources.
     \item \textbf{Flink}: requires snapshot + restart for reallocation.
   \end{itemize}
 
-  \subsection*{Fault Tolerance}
+  \subsection{Fault Tolerance}
   \begin{itemize}
     \item \textbf{Spark}: If someone fails, redo his computation.
     \item \textbf{Flink}: checkpoint \& replay (Chandy-Lamport).
   \end{itemize}
 
-  \section*{Peer-to-Peer (P2P)}
+  \section{Peer-to-Peer (P2P)}
 
-  \subsection*{Definition}
+  \subsection{Definition}
   \begin{itemize}
     \item Distributed systems without central control.
     \item Each node can act as client, server, and router.
   \end{itemize}
 
-  \subsection*{Motivation}
+  \subsection{Motivation}
   \begin{itemize}
     \item Popular in 2000s for file sharing (e.g., Napster).
     \item Use idle resources at the edges (bandwidth, CPU, storage).
   \end{itemize}
 
-  \subsection*{Characteristics}
+  \subsection{Characteristics}
   \begin{itemize}
     \item No central administration.
     \item Highly dynamic: nodes can join/leave anytime.
@@ -2014,29 +2004,29 @@
     \item Internet-scale; no global view.
   \end{itemize}
 
-  \subsection*{Overlay Networks}
+  \subsection{Overlay Networks}
   \begin{itemize}
     \item Logical links on top of the physical network.
     \item Peers form a virtual network for routing/search.
   \end{itemize}
 
-  \section*{Resource Retrieval}
+  \section{Resource Retrieval}
 
-  \subsection*{Types of Queries}
+  \subsection{Types of Queries}
   \begin{itemize}
     \item \textbf{Search}: find all items matching a query.
     \item \textbf{Lookup}: find a specific item.
   \end{itemize}
 
-  \subsection*{What is Retrieved?}
+  \subsection{What is Retrieved?}
   \begin{itemize}
     \item \textbf{Data}: actual file (burdens the overlay).
     \item \textbf{Reference}: location of the file (preferred).
   \end{itemize}
 
-  \section*{Centralized Search: Napster}
+  \section{Centralized Search: Napster}
 
-  \subsection*{How it Works}
+  \subsection{How it Works}
   \begin{itemize}
     \item Clients contact a central server to:
           \begin{itemize}
@@ -2048,28 +2038,28 @@
     \item File transfer happens peer-to-peer.
   \end{itemize}
 
-  \subsection*{Pros}
+  \subsection{Pros}
   \begin{itemize}
     \item Simple design.
     \item $O(1)$ search scope.
   \end{itemize}
 
-  \subsection*{Cons}
+  \subsection{Cons}
   \begin{itemize}
     \item Server maintains $O(N)$ state.
     \item Centralized search processing.
     \item Single point of failure/control.
   \end{itemize}
 
-  \subsection*{Is Napster True P2P?}
+  \subsection{Is Napster True P2P?}
   \begin{itemize}
     \item Partially: data transfer is P2P.
     \item Lookup is centralized $\rightarrow$ not pure P2P.
   \end{itemize}
 
-  \section*{Query Flooding - Gnutella}
+  \section{Query Flooding - Gnutella}
 
-  \subsection*{How it Works}
+  \subsection{How it Works}
   \begin{itemize}
     \item No central server, fully decentralized.
     \item Join: Join the network: contact nodes that become neighbors.
@@ -2077,13 +2067,13 @@
     \item Fetch: download directly from peer.
   \end{itemize}
 
-  \subsection*{Pros}
+  \subsection{Pros}
   \begin{itemize}
     \item Fully decentralized, no central coordination.
     \item Search supports flexible queries (text, fuzzy search).
   \end{itemize}
 
-  \subsection*{Cons}
+  \subsection{Cons}
   \begin{itemize}
     \item Network flooding: C neighbours and D hop to live causes on average $C \times D$
           messages per query.
@@ -2091,16 +2081,16 @@
     \item High churn: nodes join/leave frequently.
   \end{itemize}
 
-  \section*{Hierarchical P2P - Kazaa}
+  \section{Hierarchical P2P - Kazaa}
 
-  \subsection*{Architecture}
+  \subsection{Architecture}
   \begin{itemize}
     \item Two-tier topology: \textbf{supernodes} and normal nodes.
     \item Normal nodes contact supernodes for search.
     \item Supernodes flood the query among themselves.
   \end{itemize}
 
-  \subsection*{Workflow}
+  \subsection{Workflow}
   \begin{itemize}
     \item Join: connect to a supernode.
     \item Publish: send list of files to supernode.
@@ -2108,15 +2098,15 @@
     \item Fetch: direct peer-to-peer transfer, possibly parallel.
   \end{itemize}
 
-  \subsection*{Pros \& Cons}
+  \subsection{Pros \& Cons}
   \begin{itemize}
     \item Pros: handles heterogeneity (bandwidth, CPU).
     \item Cons: no guarantees on search time/scope.
   \end{itemize}
 
-  \section*{Collaborative P2P - BitTorrent}
+  \section{Collaborative P2P - BitTorrent}
 
-  \subsection*{Basics}
+  \subsection{Basics}
   \begin{itemize}
     \item Join: contact a centralized \textbf{tracker}, get peers list.
     \item Publish: run a tracker.
@@ -2124,7 +2114,7 @@
     \item Fetch: exchange file fragments among peers.
   \end{itemize}
 
-  \subsection*{Terminology}
+  \subsection{Terminology}
   \begin{itemize}
     \item \textbf{Torrent}: metadata file (file names, sizes, hashes).
     \item \textbf{Seed}: peer with complete file.
@@ -2132,7 +2122,7 @@
     \item \textbf{Swarm}: all peers (seeds + leeches).
   \end{itemize}
 
-  \subsection*{Fragment Distribution}
+  \subsection{Fragment Distribution}
   \begin{itemize}
     \item File split into fixed-size fragments (e.g., 256KB).
     \item Peers use \textbf{rarest-first} to download least common pieces. This tries to
@@ -2142,28 +2132,28 @@
           of the file. Even if there are no seeds!
   \end{itemize}
 
-  \subsection*{Tit-for-Tat Strategy}
+  \subsection{Tit-for-Tat Strategy}
   \begin{itemize}
     \item "I upload to you if you upload to me."
     \item \textbf{Choking}: temporarily refuse to upload to slow peers.
     \item \textbf{Optimistic unchoke}: explore new connections.
   \end{itemize}
 
-  \subsection*{Pros \& Cons}
+  \subsection{Pros \& Cons}
   \begin{itemize}
     \item Pros: reduces free-riding, scalable file sharing.
     \item Cons: needs central tracker to bootstrap.
   \end{itemize}
 
-  \section*{Freenet}
+  \section{Freenet}
 
-  \subsection*{Goals}
+  \subsection{Goals}
   \begin{itemize}
     \item Anonymous publishing and retrieval.
     \item No central control; scalable and censorship-resistant.
   \end{itemize}
 
-  \subsection*{Operations}
+  \subsection{Operations}
   \begin{itemize}
     \item Join: connect to known peers; get node ID.
     \item Publish: route file contents toward the node which stores other files whose id
@@ -2172,14 +2162,14 @@
     \item Fetch: result is returned back; cached along path.
   \end{itemize}
 
-  \subsection*{Routing}
+  \subsection{Routing}
   \begin{itemize}
     \item Nodes store local data + neighbor hints.
     \item Forward request to "best guess" neighbor.
     \item Cache data on the way back (LRU replacement).
   \end{itemize}
 
-  \subsection*{Properties}
+  \subsection{Properties}
   \begin{itemize}
     \item Data migrates towards areas of demand.
     \item Popular data is widely cached.
@@ -2202,175 +2192,52 @@
     \item Still no guarantees on query time
   \end{itemize}
 
-  \section*{Chord - Ring-based DHT}
+  \chapter{DHT}
+  Is a distributed hash table that exposes the classic abstraction
+  \texttt{put(id,item)} \texttt{get(id)}. They are implemented with an overlay
+  network of brokers that organize in a Ring, Tree, Hypercube, SkipList. They can
+  be used for flat naming by storing the name as key and the address as value.
 
-  \subsection*{Key Concepts}
-  \begin{itemize}
-    \item Node and keys $\to$ $m$-bit IDs (hash of IP, item).
-    \item $N=2^m$ nodes.
-    \item Item with key $k$ is stored at node with smallest ID $\geq k$ (successor).
-  \end{itemize}
+  \section{Chord Implementation}
 
-  \subsection{Instructions}
-  \begin{itemize}
-    \item Join: clients contact a “bootstrap” node and integrate into the distributed
-          data structure; get a node id
-    \item Publish: route publication for file id toward a close node id along the data
-          structure
-    \item Search: route a query for file id toward a close node id
-    \item Fetch: publication will contain actual file, than query stop, else will contain
-          a reference, to a location closer to the file.
-  \end{itemize}
+  Brokers and keys are organized in a circular manner. The size of the key space
+  is m (so $2^m$ keys are available). Each broker and key is assigned an m bit id
+  (usually the hash of the IP address and the hash of the keys). Key k is managed
+  by the first broker with an index greater than k (the successor). Brokers have
+  a direct connection to the successor broker and they keep a finger table with m
+  entries where entry i in the finger table of node n is the first node whose id
+  is higher or equal than $n + 2^i$. When looking for a key a client connects to
+  the closest broker and sends a get(key) request. The broker connects with the
+  broker closest to the key using his finger table. This procedure has an O(m)
+  comlexity.
 
-  \subsection*{Routing}
+  \textbf{Join}
 
-  \begin{itemize}
-    \item Each node knows its \textbf{successor} and \textbf{finger table}.
-    \item Finger $i$ points to first node $\geq$ $n + 2^i$.
-    \item Each hop reduces distance by $\sim$ half $\to O(\log N)$ hops.
-  \end{itemize}
+  When a new node n wants to join the Chord, the successor, finger table and
+  predecessor need to be initialized. We suppose that n knows at least another
+  node n', so will make to n' m requests to initialize his fields. Then the other
+  nodes in the Chord need to be updated: nodes q where n might be in position i
+  in their finger table are nodes where $suc(q+2^i) = n$. The cost of updating
+  them is $m^2$, because we need to find m nodes and update their table
+  (constant). Then node n needs to obtain a copy of the key value pairs he
+  handles by asking them to his successor.
 
-  \subsection*{Join Procedure}
-  \begin{itemize}
-    \item The joining node contains a reference to a node. It will ask that node to find
-          the elements that the joining node needs to populate the finger table.
-    \item Cost: $O(\log^2 N)$ Since each search is log and the size of the table is log.
-    \item Other nodes might need to update their table too.
-  \end{itemize}
+  \textbf{Failure resilience}
 
-  \subsection*{Stabilization}
-  \begin{itemize}
-    \item Successor pointers periodically checked/updated.
-    \item Prevent inconsistencies from joins/leaves.
-  \end{itemize}
+  To tolerate failures we need to replicate the key value pairs in each node. We
+  replicate them in K successors. Every node keeps a direct pointer to K
+  successors. When an operation is issued we lazily check if the node pointed by
+  the entry in the finger table is still up and if it is not we update.
 
-  \subsection*{Fault Tolerance}
-  \begin{itemize}
-    \item Maintain list of $R$ successors.
-    \item Resilient to $R-1$ simultaneous failures.
-  \end{itemize}
+  \textbf{Limitations}
 
-  \section*{Chord: Summary}
-
-  \begin{itemize}
-    \item Routing table: $O(\log N)$ size.
-    \item Routing time: $O(\log N)$ hops.
-    \item Joining time: $O(\log^2 N)$.
-  \end{itemize}
-
-  \subsection*{Pros}
-  \begin{itemize}
-    \item Guaranteed lookup.
-    \item Efficient search scope.
-  \end{itemize}
-
-  \subsection*{Cons}
-  \begin{itemize}
-    \item Not widely used.
-    \item Hard for non-exact matches.
-    \item Ignores physical network topology.
-  \end{itemize}
-
-  \section*{Other DHTs}
-  \begin{itemize}
-    \item \textbf{Kademlia}: tree-based structure.
-    \item \textbf{CAN}: d-dimensional space partitioning.
-  \end{itemize}
-
-  \section*{DHT in IPFS}
-
-  \begin{itemize}
-    \item IPFS uses DHT for content-addressable storage.
-    \item Decentralized data sharing.
-    \item Content addressed by hash, not by location.
-  \end{itemize}
+  Chord implementation is rarely used because it doesn't take into account the
+  physical topology of the network (a suc might be a WAN hop away). Then is not
+  suitable for inexact matches. Another limitation is the creation of hotspots in
+  case of popular key value pairs. This can be mitigated with caching. A possible
+  solution to the first problem might be to modify the rule for the finger table
+  construction by also taking into account the distance of the node and
+  prioritize closer nodes.
 
 \end{multicols}
-
-\section{Project Reliable queuing system}
-\subsection{Request}
-\begin{itemize}
-  \item distributed and reliable queuing platform
-  \item set of brokers collaborate to offer multiple queues of integers to multiple
-        clients.
-  \item queues are persistend, append only, FIFO data structures.
-  \item Multiple brokers replicate the data of queues to guarantee fault tolerance in
-        case of crashes.
-  \item Client connect to brokers to
-        \begin{itemize}
-          \item create new queues
-          \item append new data on existing queue
-          \item read data from a queue
-        \end{itemize}
-  \item Each client is uniquely identified and the brokers are responsible for keeping
-        track of the next data element each client should read.
-
-\end{itemize}
-Investigate and clarify the level of reliability offered by your system.
-
-Similar to Kafka (see how they implemented it)
-\subsection{Requirements}
-\begin{itemize}
-  \item should work in LAN. -> this implies:::
-  \item use only sockets
-  \item no partitions
-  \item nodes can fail
-  \item storage is stable
-  \item nodes have computing and storage power.
-\end{itemize}
-
-\subsection{Architecture}
-Parameters: N, K
-
-you have N nodes. Each node runs a broker. We define a parameter $K\leq N$ that
-is the replication factor, each queue is replicated K times, meaning that K
-broker will store it. For every queue one leader is elected, the rest is used
-as followers for reliability. Lets call the K nodes that store a queue, group.
-
-We assume no partitions, so it means that nodes can join or exit a group, but
-never split the group in a two or more head situation. This means that we don't
-have to implement a protocol with consensus, because it is already guaranteed
-from this requirement.
-
-We create a class for Node. The collection of nodes is the cluster. The cluster
-runs an instance of our system. Each node provides access to storage(simulated
-as a directory in the file system) and computational power. Each node runs a
-broker. We add this indirection so we can terminate nodes and not broker. Nodes
-and broker look the same hmm...
-
-\subsection{Guarantees}
-\subsection{Testing}
-
-At-most-once / at-least-once / exactly-once guarantees.
-
-Producer failure (after enqueue, before ack).
-
-Consumer failure (after dequeue, before ack).
-
-delayed delivery.
-
-Leader failover (Raft/Paxos).
-
-Message ordering guarantees under failures.
-
-Develop queue logic → test unit-level reliability (acks, redelivery).
-
-Spawn local cluster (3–5 nodes) → Docker Compose or separate processes.
-
-Inject chaos (node kill) → validate recovery.
-
-\subsection{Todo}
-\begin{itemize}
-  \item What can happen if a client crashes? we need to wait for the acks and stuff
-        from the TCP layer. This is where we have the delivery semantics. I think we
-        solve this with epochs and clocks on the packages.
-  \item I think that everyone will see the queue with the same state since there is
-        only one coordinator in the queue.
-  \item Of course we need to guarantee the same order of append in the replicas.
-  \item Il discovery runna su un solo nodo e viene eletto. I client si connettono a
-        lui. Come fanno a spottarlo?
-  \item I client mantengono la connessione ai broker a che servono. Come fanno a
-        mantenere la connessione? è lato IP? o hanno un ID del server?
-\end{itemize}
-
 \end{document}
