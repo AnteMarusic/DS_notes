@@ -30,6 +30,7 @@
 \begin{document}
 
 \begin{multicols}{2}
+  \chapter{Intro}
   \section*{IP (Internet Protocol)}
   Best effort delivery: The protocol doesn't provide guarantees on delivery or QoS. More in detail:
   \begin{itemize}
@@ -91,79 +92,118 @@
           in proxies close to the clients.
   \end{itemize}
 
-  \section*{Software Architecture}
-
-  \subsection*{Network OS-Based Systems}
+  \section{challenges of DS}
   \begin{itemize}
-    \item Each machine runs its own network OS.
-    \item Communication services provided at OS level.
-    \item Platform differences are handled by the application.
+    \item \textbf{Heterogeneity: } Different OS, different data rapresentation, different implementation of standards (ex Posix thread
+          vs windows threads).
+    \item \textbf{Openess:} Use standards and simplicity as much as possible.
+    \item \textbf{Security:} guarantee CIA (Confidenciality, Integrity, Availability). Still problems in mobile code application, DOS, Secure content based routing.
+    \item \textbf{To ensure scalability use:} Asynchronous communication, caching and replication, epidemic dissemination, hierarchical structuring.
+    \item \textbf{Failure handling:} Crash of a remote server is impossible to determine ceirtainly
+          (server might be up but we are partitioned or messages are still arriving), we use suspect of crash.
+          Replication mitigates this problems, but is difficult to ensure.
+    \item \textbf{Transparency:} Mask network to ease development
   \end{itemize}
 
-  \subsection*{Middleware-Based Systems}
+  \chapter*{Software Architecture}
+  Where do we handle the distributed part? Application vs Middleware
+
+  \section*{Network OS Based Systems}
+  Application uses communication services provided at OS level. Platform
+  differences are handled by the application.
+
+  \section*{Middleware-Based Systems}
+  Application relies on middleware for communication. Services commonly provided
+  by the middleware are:
   \begin{itemize}
-    \item Middleware provides common services:
+    \item Comunication services (sync/async, point to point/multicast).
+    \item Mask OS differences
+    \item Application services: distributed transactions, messaging, notification.
+    \item Management services: naming, security, failure handling.
+  \end{itemize}
+
+  \chapter*{Run-Time Architecture}
+  What are the components and how is data exchanged at runtime?
+  \section*{Architectural Styles}
+  \begin{itemize}
+    \item \textbf{Client-server}: Clients query the API of the server with messages or RPC. Clients start the
+          communication. Architecture is divided in tiers, each tier
+          is on a different machine (or group of machines) and provides a service.
+    \item \textbf{Service Oriented Architecture (SOA):} Differently from client server,
+          the client know what service he needs but doesn't know the endpoint, so contacts
+          a broker to obtain it.
+          Built on the concept of Broker, Client and service provider.
+          Clients query broker for a server and broker returns address of the service
+          provider. Service provider exposes an interface and client queries it with the
+          communication protocol.
+          In case of complex operations that span across multiple web services we need
+          orchestration: the process of calling a set of services in order to reach a goal.\\
+
+          One implementation is web services (comunication happens through HTTP) (do not
+          confuse with microservices that is an architectural pattern at the application
+          level). The discovery of the service happens trough Web Services Discovery.
+          UDDI (Universal Description Discovery Integration) is an XML registry that
+          allows to search for a service defined with the WSDL (Web Service Description
+          Language). Then communication happens in a RPC style over SOAP protocol. This
+          tecnique isn't used anymore because is difficult to secure since anyone could
+          impersonate a service and register on the UDDI.\\
+
+          Service discovery is still useful to find the exact IP/port address of a
+          replicated service. In this scenario the query is not hard (we know the service
+          that we need, so the discovery part is just a query to a map). In case of
+          client side service discovery the client contacts the discovery registry and
+          asks for a service. The registy (that is a database that monitors the state of
+          the available services and their location) returns the active instances and
+          then the client decides what to query based on some load balancing policy. In
+          case of server side service discovery the client queries a load balancer at a
+          well known address that then forwards the request to the requested
+          microservice. To keep track of their location the load balancer (server)
+          queries the discovery registry.
+    \item \textbf{REST:}
+
+          Representational State Transfer is a communication protocol used over HTTP. It
+          is based on URLs to indicate univocally resources. URLs are translated by the
+          DNS service in actual IP/Port addresses. Each message can be of type POST GET
+          PUT and DELETE and a few others. The responses are caracterised by a three
+          digit code that indicates success or error.
           \begin{itemize}
-            \item Communication and coordination (sync/async, p2p/multicast).
-            \item Application services: transactions, messaging, notification.
-            \item Management services: naming, security, failure handling.
+            \item Client Server and stateless (any state must be transferred from the client to
+                  the server).
+            \item Data needs to be labelled as cacheable or not.
+            \item Communication happens by transferring state rapresentation through HTTP
+                  messages.
+            \item Interfaces are uniform, meaning that everything has an id (URL), even actions.
+                  State is transferred with a rapresentation (JSON or XML). Action requested is
+                  described in the message payload and type. Clients move through states using
+                  hyperlinks.
           \end{itemize}
-    \item Hides platform heterogeneity.
-  \end{itemize}
-
-  \section*{Run-Time Architecture}
-
-  \subsection*{Architectural Styles}
-  \begin{itemize}
-    \item Client-server
-    \item Service-oriented
-    \item REST
     \item Peer-to-peer
     \item Object-oriented
     \item Data-centered (tuple spaces)
-    \item Event-based
-    \item Mobile code
-  \end{itemize}
-
-  \subsection*{Client-Server Model}
-  \begin{itemize}
-    \item Server: provides services via API (passive).
-    \item Client: accesses services via messages or RPC.
-  \end{itemize}
-
-  \subsection*{Tiers}
-  \begin{itemize}
-    \item \textbf{Two-tier:} GUI + Application/Database.
-    \item \textbf{Three-tier:} GUI, Application logic, Data services.
-    \item \textbf{N-tier:} Additional components (load balancing, caching).
-  \end{itemize}
-
-  \subsection*{Service Oriented Architecture (SOA)}
-  \begin{itemize}
-    \item \textbf{Services:} Loosely coupled functionalities.
-    \item \textbf{Providers:} Export services.
-    \item \textbf{Brokers:} Register service descriptions.
-    \item \textbf{Consumers:} Bind to services at runtime.
-    \item \textbf{Orchestration:} Compose services into workflows.
-  \end{itemize}
-
-  \subsection*{Web Services}
-  \begin{itemize}
-    \item WSDL: Interface description.
-    \item SOAP: Message exchange (XML over HTTP).
-    \item UDDI: Service discovery.
-  \end{itemize}
-
-  \subsection*{REST}
-  \begin{itemize}
-    \item Client-server, stateless, cacheable.
-    \item \textbf{Uniform interface constraints:}
+    \item \textbf{Event-based:}
           \begin{itemize}
-            \item Resource identification (URI).
-            \item Manipulation via representations (JSON, XML).
-            \item Self-descriptive messages.
-            \item Hypermedia as the engine of state.
+            \item Components publish/subscribe to events.
+            \item Message based,Asynchronous, multicast, anonymous.
           \end{itemize}
+    \item \textbf{Mobile code}:
+
+          Mobile code is an architecture that allows the relocation of components of a
+          distributed system at runtime. We have the following cases:
+          \begin{itemize}
+            \item \textbf{Remote evaluation}: In this paradigm, a client ships code (a function, script,
+                  or job specification) to a remote host. The remote machine executes the code
+                  using its own data and execution environment, and returns the results to the
+                  sender. Examples are google colab, AWS lambda, MapReduce tasks.
+            \item \textbf{Mobile agent}: A mobile agent is an active entity that migrants across hosts
+                  carrying its code and its execution state. The agent suspends execution,
+                  relocates to another node, and resumes from the exact point it stopped.
+                  Examples are an agent that moves between servers to collect data (this is done to move the
+                  computation close to data to avoid expensive data migration).
+            \item \textbf{Code on Demand:} The client already has state and execution capabilities but is
+                  missing some code. It requests code from a remote server and executes it
+                  locally. Examples are JavaScript downloaded and executed by a browser.
+          \end{itemize}
+          Code on Demand makes it easy to ship patches and new features to clients without the need of requesting updates.
   \end{itemize}
 
   \subsection*{Peer-to-Peer (P2P)}
@@ -193,28 +233,7 @@
     \item High decoupling, but scaling and reactivity are challenging.
   \end{itemize}
 
-  \subsection*{Event-Based Model}
-  \begin{itemize}
-    \item Components publish/subscribe to events.
-    \item Asynchronous, multicast, anonymous.
-  \end{itemize}
-
-  \subsection*{Mobile Code}
-  \begin{itemize}
-    \item Move code (and sometimes state) at runtime.
-    \item \textbf{Strong mobility}: code + state.
-    \item \textbf{Weak mobility}: code only.
-  \end{itemize}
-  Pros
-  – The ability to move pieces of code (or entire
-  components) at run-time provides a great flexibility to
-  programmers
-  New versions of a component can be uploaded at run-time
-  without stopping the application. Existing components can be enriched with new functionalities. New services can be easily added
-  Existing services can be adapted to the client needs
-  Cons: Securing mobile code applications is a mess
-
-  \section*{Interaction Model}
+  \chapter*{Interaction Model}
 
   \subsection*{Synchronous Systems}
   \begin{itemize}
@@ -284,7 +303,7 @@
     \item Use probabilistic guarantees.
   \end{itemize}
 
-  \section*{Communication Fundamentals}
+  \chapter*{Communication Fundamentals}
 
   \subsection*{OSI Model (Recap)}
   \begin{itemize}
@@ -451,20 +470,6 @@
     \item Synch and asynch.
   \end{enumerate}
 
-  \section*{Sockets}
-
-  \subsection*{Stream Sockets (TCP)}
-  \begin{itemize}
-    \item Connection-oriented.
-    \item Unique 4-tuple (IP+port for both ends).
-  \end{itemize}
-
-  \subsection*{Datagram Sockets (UDP)}
-  \begin{itemize}
-    \item Connectionless, unordered.
-    \item The same port can be used to send to multiple different destinations.
-  \end{itemize}
-
   \section*{MPI (Message Passing Interface)}
 
   \begin{itemize}
@@ -490,107 +495,93 @@
 
   \section*{Publish/Subscribe}
 
-  \subsection*{Basic Idea}
+  Message based communication model where each client can publish and subscribe
+  to events. Events are notified to the subscribers by a dispatcher that can be
+  centralized or distributed. Subscriptions are specified by a subscription
+  language. Based on the expressiveness of such language this communication model
+  can be divided in topic based or content based: an expressive language is able
+  to perform mactching also on the fields in the content of the message and
+  express more complicated queries. We trade a greater expressiveness with the
+  complexity of the routing.
+
+  This model is transient, asynchronous, multipointand and implicit because
+  events are produced by publishers and delivered to the middleware without
+  expecting any ack from subscribers. This makes communication implicit, since
+  only the middleware keeps track of the subscribers.
+
+  Distributed dispatchers can be of two types:
   \begin{itemize}
-    \item \textbf{Publish}: send event.
-    \item \textbf{Subscribe}: register interest.
+    \item \textbf{DHT}:
+
+          Message brokers organize in a DHT. Each nodes handles topics with an hash less
+          or equal that their position in the circle. For each topic keeps a list of
+          subscribers and delivers messages to them either directly or through forwarding
+          to other message brokers. Another approach for delivery might be building an
+          overlay network: every node that forwards the subscription remembers that he
+          received a subscription message coming from a ceirtain broker. An event of that
+          type will be forwarded in the opposite direction. This implicitly builds an
+          overlay tree with root in the broker that handles the topic.
+    \item \textbf{Overlay network}:
+
+          Message brokers organize themselves into an overlay network that can follow
+          either a DAG or a Tree structure. In the DAG case, each broker maintains a
+          local group of clients together with their subscriptions, and forwarding is
+          performed using routing information that is progressively accumulated during
+          the subscription phase. Events are then propagated along the DAG while avoiding
+          cycles, guaranteeing that all interested subscribers eventually receive each
+          matching message.
+
+          In the Tree approach, brokers construct and maintain explicit forwarding trees
+          for content-based routing. Different forwarding strategies can be used:
+          \emph{Per-Source Forwarding} (PSF), where each source defines a shortest-path
+          tree (SPT) and brokers keep predicates per outgoing edge; \emph{improved PSF}
+          (iPSF), which exploits indistinguishable sources to reduce forwarding-table
+          size; and \emph{Per-Receiver Forwarding} (PRF), where messages carry the set of
+          receivers in the header and each broker partitions this set using its unicast
+          routing table. These trees ensure loop-free propagation and allow the
+          middleware to route each event only along branches that lead to interested
+          subscribers. PSF is ideal if the number of sources is less than the number of
+          sinks, viceversa for PRF.
   \end{itemize}
 
-  \subsection*{Subscription Types}
-  \begin{itemize}
-    \item \textbf{Topic-based}: predefined subjects.
-    \item \textbf{Content-based}: filters on event content.
-  \end{itemize}
+  \subsection*{Path Construction Strategies}
 
-  \subsection*{Event Dispatcher}
-  \begin{itemize}
-    \item Collects subscriptions and routes events.
-    \item Can be centralized or distributed (overlay network).
-  \end{itemize}
-
-  \subsection*{Forwarding Strategies}
-  If overlay network
-  \begin{itemize}
-    \item organize it in an acyclic graph and each
-    \item Every broker stores only subscriptions coming from directly connected clients
-    \item Messages are forwarded from broker to broker
-    \item and delivered to clients only if they are subscribed
-  \end{itemize}
-
-  Hierachical Hierarchical forwarding: Tree structure overlay network
-  \begin{itemize}
-    \item Both messages and subscriptions are forwarded by brokers towards the root of
-          the tree
-    \item Messages flow “downwards” only if a matching
-    \item Messages are forwarded from broker to broker
-    \item and delivered to clients only if they are subscribed
-  \end{itemize}
-
-  DHT based
-  \begin{itemize}
-    \item  To subscribe for messages having a given subject S – Calculate a hash of the
-          subject Hs – Use the DHT to route toward the node succ(Hs) – While flowing
-          toward succ(Hs) leave routing information to return
-    \item messages back • To publish messages having a given subject S – Calculate a hash
-          of the subject Hs – Use the DHT to route toward the node succ(Hs) – While
-          flowing toward succ(Hs) follow back routes toward
-  \end{itemize}
-
-  \subsection*{Per-Source Forwarding (PSF)}
+  \textbf{Distance Vector (DV)}
 
   \begin{itemize}
-    \item Each publisher (source) creates its own \textbf{Shortest Path Tree (SPT)}.
-    \item Forwarding tables store entries \textbf{per source}.
-    \item For each source:
+    \item Each node constructs a \textbf{Shortest Path Tree (SPT)} by repeatedly
+          exchanging distance information with its neighbors. Nodes do not know the
+          global topology: they maintain only a \textbf{vector of distances} to all
+          destinations and the \textbf{next hop} to reach them.
+    \item Path construction is performed through two types of messages:
           \begin{itemize}
-            \item List of child nodes to forward to.
-            \item Predicate: union of all subscriptions reachable through each child.
+            \item \emph{request (config)} messages, used to trigger the propagation
+                  of distance information;
+            \item \emph{reply (config response)} messages, where each node reports
+                  its current distance estimates toward all nodes.
           \end{itemize}
-    \item Pros: Efficient for stable topologies.
-    \item Cons: High storage overhead when there are many sources.
+    \item Nodes update their tables according to the \textbf{Bellman-Ford rule},
+          selecting the neighbor that offers the minimal distance. Eventually, each node
+          converges to a stable SPT rooted at the source.
+    \item DV is simple and lightweight but may suffer from well-known issues such as
+          \textbf{count-to-infinity} and slow convergence after failures.
   \end{itemize}
 
-  \subsection*{Improved Per-Source Forwarding (iPSF)}
+  \textbf{Link-State (LS)}
 
   \begin{itemize}
-    \item Optimizes PSF by grouping \textbf{indistinguishable sources}.
-    \item Two sources A and B are indistinguishable from node $n$ if:
-          \begin{itemize}
-            \item $n$ has the same children for both SPTs.
-            \item Same reachable nodes along those children.
-          \end{itemize}
-    \item Reduces table size and complexity.
-    \item Easier to build and maintain in dynamic environments.
-  \end{itemize}
-
-  \subsection*{Per-Receiver Forwarding (PRF)}
-
-  \begin{itemize}
-    \item The sender includes the \textbf{set of intended receivers} in the message
-          header.
-    \item Each hop partitions the recipient set among its outgoing links.
-    \item Forwarding tables store predicates per destination (receiver).
-    \item Pros: Lower forwarding state per source.
-    \item Cons: May increase message overhead due to large headers.
-  \end{itemize}
-
-  \section*{Path Construction Strategies}
-
-  \subsection*{Distance Vector (DV)}
-
-  \begin{itemize}
-    \item Each node builds a \textbf{Shortest Path Tree (SPT)} to minimize latency.
-    \item Uses \textbf{request (config)} and \textbf{reply (config response)} messages.
-    \item Nodes know only next hops and distances, not full topology.
-  \end{itemize}
-
-  \subsection*{Link-State (LS)}
-
-  \begin{itemize}
-    \item Each node discovers the \textbf{full network topology}.
-    \item Uses \textbf{Link-State Packets (LSPs)} shared among all nodes.
-    \item Each node computes its SPT locally using global knowledge.
-    \item Allows optimization for various metrics (latency, bandwidth, etc.).
+    \item Each node gathers the \textbf{complete view of the network topology}. This is
+          achieved by flooding \textbf{Link-State Packets (LSPs)} containing information
+          about its directly connected neighbors and link costs.
+    \item Once every node has received all LSPs, they all share the same global topology
+          graph. Each node then computes its own SPT locally using \textbf{Dijkstra's
+            algorithm} or other shortest-path procedures.
+    \item LS supports flexible optimization criteria: links can be weighted by latency,
+          bandwidth, reliability, or congestion metrics, enabling \textbf{fine-grained
+            control} over routing decisions.
+    \item LS converges quickly and avoids DV's count-to-infinity problem, at the expense
+          of higher memory requirements and more complex control traffic (LSP flooding
+          and periodic refreshes).
   \end{itemize}
 
   \section*{Stream-oriented Communication}
@@ -803,7 +794,7 @@
     \item Requires global stability $\rightarrow$ scalability issue.
   \end{itemize}
 
-  \section{Synchronization}
+  \chapter{Synchronization}
 
   \subsection*{Challenges in Distributed Systems}
   \begin{itemize}
