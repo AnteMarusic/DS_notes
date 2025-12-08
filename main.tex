@@ -108,15 +108,15 @@
           protocols to communicate betweeen nodes and synchronize
     \item \textbf{Partial failures:} Is impossible to find with ceirtainty failures. We can only make hypothesis based on missing responses.
   \end{itemize}
-
-  \chapter{Software Architecture}
+  \chapter{Modelling a distributed system}
+  \section{Software Architecture}
   Where do we handle the distributed part? Application vs Middleware
 
-  \section{Network OS Based Systems}
+  \subsection{Network OS Based Systems}
   Application uses communication services provided at OS level. Platform
   differences are handled by the application.
 
-  \section{Middleware-Based Systems}
+  \subsection{Middleware-Based Systems}
   Application relies on middleware for communication. Services commonly provided
   by the middleware are:
   \begin{itemize}
@@ -126,7 +126,7 @@
     \item Management services: naming, security, failure handling.
   \end{itemize}
 
-  \chapter{Run-Time Architecture}
+  \section{Run-Time Architecture}
   What are the components and how is data exchanged at runtime?
   \section{Architectural Styles}
   \begin{itemize}
@@ -237,7 +237,7 @@
     \item High decoupling, but scaling and reactivity are challenging.
   \end{itemize}
 
-  \chapter{Interaction Model}
+  \section{Interaction Model}
 
   \subsection{Synchronous Systems}
   \begin{itemize}
@@ -1288,7 +1288,8 @@
     \item Best: combine logging + coordinated checkpointing.
   \end{itemize}
 
-  \chapter{Agreement in practice}
+  \chapter{Consensus}
+  $Consensus=Agreement+Validity+Termination$
 
   \section{Atomic Commit Protocols}
 
@@ -1582,7 +1583,7 @@
     \item A and B cannot both be sure theirs is the canonical chain.
   \end{itemize}
 
-  \section{Consistency}
+  \chapter{Consistency}
 
   \subsection{Replication goals}
   \begin{itemize}
@@ -1850,6 +1851,7 @@
     \item \textbf{Anti-entropy}: background reconciliation.
   \end{itemize}
 
+  \chapter{Big data}
   \section{Case Studies}
 
   \subsection{Spanner}
@@ -1982,7 +1984,7 @@
     \item \textbf{Flink}: checkpoint \& replay (Chandy-Lamport).
   \end{itemize}
 
-  \section{Peer-to-Peer (P2P)}
+  \chapter{Peer-to-Peer (P2P)}
 
   \subsection{Definition}
   \begin{itemize}
